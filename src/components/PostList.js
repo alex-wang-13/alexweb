@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const PostList = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -21,13 +22,15 @@ const PostList = () => {
     <div className="container mt-5">
       <h2>Blog Posts</h2>
       {blogPosts.length === 0 ? (
-        <p>No blog posts available</p>
+        <p>No posts available</p>
       ) : (
         <ul className="list-group">
           {blogPosts.map((post) => (
             <li key={post._id} className="list-group-item">
-              <h4>{post.title}</h4>
-              <p className="small">{post.content}</p>
+              <Link to={`/posts/${post._id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
+                <h4>{post.title}</h4>
+                <p className="small">{post.content.substring(0, 100)}</p>
+              </Link>
             </li>
           ))}
         </ul>

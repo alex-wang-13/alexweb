@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import PostList from './components/PostList';
+import PostDetails from './components/PostDetails';
 import Scrabble from './components/Scrabble';
 import Crossword from './components/Crossword';
 import Compose from './components/Compose';
@@ -25,7 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<PostList />} />
-          <Route path="/posts/:id" element={<PostDetails/>} />
+          <Route path="/posts/:id" element={<PostDetails />} />
           <Route path="/scrabble" element={<Scrabble />} />
           <Route path="/crossword" element={<Crossword />} />
           <Route path="/compose" element={<Compose />} />
