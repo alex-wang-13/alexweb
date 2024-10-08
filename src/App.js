@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
-import Posts from './components/Posts';
+import PostList from './components/PostList';
 import Scrabble from './components/Scrabble';
 import Crossword from './components/Crossword';
 import Compose from './components/Compose';
@@ -24,7 +24,8 @@ function App() {
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts" element={<PostList />} />
+          <Route path="/posts/:id" element={<PostDetails/>} />
           <Route path="/scrabble" element={<Scrabble />} />
           <Route path="/crossword" element={<Crossword />} />
           <Route path="/compose" element={<Compose />} />
