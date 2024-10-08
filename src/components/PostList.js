@@ -5,7 +5,7 @@ const PostList = () => {
   const [blogPosts, setBlogPosts] = useState([]);
 
   useEffect(() => {
-    const fetchBlogPosts = async () => {
+    const fetchPostList = async () => {
       try {
         const response = await fetch('http://localhost:5000/posts');
         const data = await response.json();
@@ -15,12 +15,12 @@ const PostList = () => {
       }
     };
 
-    fetchBlogPosts();
+    fetchPostList();
   }, []);
 
   return (
     <div className="container mt-5">
-      <h2>Blog Posts</h2>
+      <h2>Posts</h2>
       {blogPosts.length === 0 ? (
         <p>No posts available</p>
       ) : (
