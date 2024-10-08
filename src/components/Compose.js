@@ -38,7 +38,7 @@ const Compose = () => {
     };
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-5">
             <h2>Submit a Blog Post</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
