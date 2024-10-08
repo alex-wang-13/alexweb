@@ -29,7 +29,7 @@ const PostList = () => {
             <li key={post._id} className="list-group-item">
               <Link to={`/posts/${post._id}`} style={{ color: "inherit", textDecoration: "inherit" }}>
                 <h4>{post.title}</h4>
-                <p className="small">{post.content.substring(0, 100)}</p>
+                <p className="small text-muted">{post.content.substring(0, 100)}</p>
               </Link>
             </li>
           ))}
