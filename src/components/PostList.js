@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const PostList = () => {
-  const [blogPosts, setBlogPosts] = useState([]);
+  const [postList, setPostList] = useState([]);
 
   useEffect(() => {
     const fetchPostList = async () => {
       try {
         const response = await fetch('http://localhost:5000/posts');
         const data = await response.json();
-        setBlogPosts(data);
+        setPostList(data);
       } catch (error) {
-        console.error('Error fetching blog posts:', error);
+        console.error('Error fetching post list:', error);
       }
     };
 
@@ -21,11 +21,11 @@ const PostList = () => {
   return (
     <div className="container mt-5">
       <h2>Posts</h2>
-      {blogPosts.length === 0 ? (
+      {postList.length === 0 ? (
         <p>No posts available</p>
       ) : (
         <ul className="list-group">
-          {blogPosts.map((post) => (
+          {postList.map((post) => (
             <li key={post._id} className="list-group-item">
               <Link to={`/posts/${post._id}`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                 <h4>{post.title}</h4>
