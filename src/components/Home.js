@@ -36,21 +36,29 @@ const Home = () => {
       {/* Technologies Section */}
       <div className="mt-5">
         <h3>Technologies I Work With</h3>
-        <div className="row text-center">
+        <div className="row text-center align-items-center">
           <div className="col-md-3">
-            <img src="https://via.placeholder.com/100" alt="JavaScript Logo" className="img-fluid" />
+            <img src="images/js-logo.png" alt="JavaScript Logo" className="img-fluid" />
+          </div>
+          <div className="col-md-3">
+            <img src="images/react-logo.png" alt="React Logo" className="img-fluid" />
+          </div>
+          <div className="col-md-3">
+            <img src="images/node-logo.png" alt="Node.js Logo" className="img-fluid" />
+          </div>
+          <div className="col-md-3">
+            <img src="images/mongodb-logo.png" alt="MongoDB Logo" className="img-fluid" />
+          </div>
+          <div className="col-md-3">
             <p>JavaScript</p>
           </div>
           <div className="col-md-3">
-            <img src="https://via.placeholder.com/100" alt="React Logo" className="img-fluid" />
             <p>React</p>
           </div>
           <div className="col-md-3">
-            <img src="https://via.placeholder.com/100" alt="Node.js Logo" className="img-fluid" />
             <p>Node.js</p>
           </div>
           <div className="col-md-3">
-            <img src="https://via.placeholder.com/100" alt="MongoDB Logo" className="img-fluid" />
             <p>MongoDB</p>
           </div>
         </div>
@@ -62,7 +70,7 @@ const Home = () => {
         <p>
           Interested in seeing my full experience and projects? Download my resume below:
         </p>
-        <a href="/path-to-your-resume.pdf" className="btn btn-secondary" download>Download Resume</a>
+        <a href="images/WangAlexResume.pdf" className="btn btn-secondary" download>Download Resume</a>
       </div>
     </div>
   );
