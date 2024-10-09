@@ -5,6 +5,8 @@ const Compose = () => {
     const [formData, setFormData] = useState({
         title: '',
         content: '',
+        date: Date(),
+        author: 'Alex Wang',
     });
 
     const navigate = useNavigate();
