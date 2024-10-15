@@ -18,6 +18,7 @@ const Home = () => {
           </p>
           <p>
             Let's collaborate on exciting projects or chat about the latest trends in technology and web development!
+            Reach out at <a href="mailto:walex11303@gmail.com" className="text-muted">walex11303@gmail.com</a>.
           </p>
         </div>
 

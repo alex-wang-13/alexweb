@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <div className="container-fluid">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-sm navbar-light bg-light">
           <a className="navbar-brand" href="/">MyApp</a>
           <div className="collapse navbar-collapse">
             <ul className="navbar-nav">
@@ -42,11 +42,11 @@ function App() {
               <div>- follow me -</div>
               <div className="small">icons by icons8</div>
             </li>
-            <li className="ms-3"><a className="text-muted" href="#"><img src="images/icons8-linkedin-48.png" /></a></li>
-            <li className="ms-3"><a className="text-muted" href="#"><img src="images/icons8-letterboxd-48.png" /></a></li>
-            <li className="ms-3"><a className="text-muted" href="#"><img src="images/icons8-goodreads-48.png" /></a></li>
+            <li className="ms-3"><a className="text-muted" href="https://github.com/alex-wang-13"><img src="images/icons8-github-48.png"/></a></li>
+            <li className="ms-3"><a className="text-muted" href="https://www.linkedin.com/in/alex-11303-wang/"><img src="images/icons8-linkedin-48.png" /></a></li>
+            <li className="ms-3"><a className="text-muted" href="https://letterboxd.com/alexthedawg/"><img src="images/icons8-letterboxd-48.png" /></a></li>
+            <li className="ms-3"><a className="text-muted" href="https://www.goodreads.com/user/show/57369610-alex"><img src="images/icons8-goodreads-48.png" /></a></li>
           </ul>
-
         </footer>
       </div>
     </Router>
