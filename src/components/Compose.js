@@ -21,7 +21,7 @@ const Compose = () => {
         console.log('Form submitted:', formData);
         // send to server
         try {
-            const response = await fetch('http://localhost:5000/compose', {
+            const response = await fetch('https://alexwebserver.onrender.com/compose', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

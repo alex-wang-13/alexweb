@@ -8,7 +8,7 @@ const PostList = () => {
   useEffect(() => {
     const fetchPostList = async () => {
       try {
-        const response = await fetch('http://localhost:5000/posts');
+        const response = await fetch('https://alexwebserver.onrender.com/posts');
         const data = await response.json();
         const date = new Date(data[0].date).toUTCString().substring(0, 16);
         setPostList(data);

@@ -10,7 +10,7 @@ const PostDetails = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/posts/${id}`);
+                const response = await fetch(`https://alexwebserver.onrender.com/posts/${id}`);
                 const data = await response.json();
                 const date = new Date(data.date).toUTCString().substring(0, 16);
                 setPost(data);

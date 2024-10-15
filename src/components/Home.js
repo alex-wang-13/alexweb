@@ -8,7 +8,7 @@ const Home = () => {
         <div className="col-md-8">
           <h1>About the Developer</h1>
           <p>
-            Hello! I'm Alex Wang, a passionate full-stack developer with coding experience in real-world contexts.
+            Hello! I'm Alex Wang, a passionate full-stack developer with coding experience in real-world environments.
             I specialize in JavaScript, but I'm also proficient in Python, Scheme, and object oriented languages
             like Java. I love creating efficient programmatic solutions for everyday tasks.
           </p>
@@ -24,7 +24,7 @@ const Home = () => {
         {/* Profile Image Section */}
         <div className="col-md-4 text-center">
           <img 
-            src="images/IMG_5.jpg" 
+            src="images/IMG_2.jpg" 
             alt="Developer Profile" 
             className="img-fluid rounded-circle mb-3" 
           />
