@@ -24,10 +24,10 @@ const Home = () => {
 
         {/* Profile Image Section */}
         <div className="col-md-4 text-center">
-          <img 
-            src="images/IMG_2.jpg" 
-            alt="Developer Profile" 
-            className="img-fluid rounded-circle mb-3" 
+          <img
+            src="images/IMG_2.jpg"
+            alt="Developer Profile"
+            className="img-fluid rounded-circle mb-3"
           />
           <h4>Alex Wang</h4>
           <p>Developer</p>
