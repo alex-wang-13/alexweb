@@ -31,23 +31,6 @@ function App() {
           <Route path="/crossword" element={<Crossword />} />
           <Route path="/compose" element={<Compose />} />
         </Routes>
-        {/* Links */}
-        <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <div className="col-md-4 mx-5 d-flex align-items-center">
-            <span className="mb-3 mb-md-0 text-muted">© 2024</span>
-          </div>
-
-          <ul className="nav col-md-4 align-items-center justify-content-end list-unstyled d-flex">
-            <li className="text-muted">
-              <div>- follow me -</div>
-              <div className="small">icons by icons8</div>
-            </li>
-            <li className="ms-3"><a className="text-muted" href="https://github.com/alex-wang-13"><img alt="Github Logo" src="images/icons8-github-48.png" /></a></li>
-            <li className="ms-3"><a className="text-muted" href="https://www.linkedin.com/in/alex-11303-wang"><img alt="Linkedin Logo" src="images/icons8-linkedin-48.png" /></a></li>
-            <li className="ms-3"><a className="text-muted" href="https://letterboxd.com/alexthedawg"><img alt="Letterboxd Logo" src="images/icons8-letterboxd-48.png" /></a></li>
-            <li className="ms-3"><a className="text-muted" href="https://www.goodreads.com/user/show/57369610-alex"><img alt="Goodreads Logo" src="images/icons8-goodreads-48.png" /></a></li>
-          </ul>
-        </footer>
       </div>
     </Router>
   );
