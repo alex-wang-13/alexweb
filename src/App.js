@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {isMobile } from 'react-device-detect';
 import Home from './components/Home';
 import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
@@ -22,8 +23,8 @@ function App() {
             <ul className="navbar-nav">
               <li className="nav-item"><a className="nav-link" id="navbarNav" href="/">Home</a></li>
               <li className="nav-item"><a className="nav-link" id="navbarNav" href="/posts">Posts</a></li>
-              <li className="nav-item"><a className="nav-link" id="navbarNav" href="/scrabble">Scrabble</a></li>
-              <li className="nav-item"><a className="nav-link" id="navbarNav" href="/crossword">Crossword</a></li>
+              <li className="nav-item"><a className="nav-link" id={isMobile && "navbarNav"} href="/scrabble">Scrabble</a></li>
+              <li className="nav-item"><a className="nav-link" id={isMobile && "navbarNav"} href="/crossword">Crossword</a></li>
             </ul>
           </div>
         </nav>
