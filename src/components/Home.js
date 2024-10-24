@@ -8,7 +8,7 @@ const Home = () => {
         <div className="col-md-9">
           <h1>About the Developer</h1>
           <p>
-            Hello! I'm Alex Wang, a passionate full-stack developer with coding experience in real-world environments.
+            Hello! I'm Alex Wang, a passionate full-stack developer from New Orleans with real-world coding experience.
             I specialize in JavaScript, but I'm also proficient in Python, Scheme, and object oriented languages
             like Java. I love creating efficient programmatic solutions for everyday tasks.
           </p>
