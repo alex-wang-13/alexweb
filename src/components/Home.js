@@ -6,7 +6,7 @@ const Home = () => {
       <div className="row">
         {/* Developer Bio Section */}
         <div className="col-md-9">
-          <h1>About the Developer</h1>
+          <h1>About the Dev</h1>
           <p>
             Hello! I'm Alex Wang, a passionate full-stack developer from New Orleans with real-world coding experience.
             I specialize in JavaScript, but I'm also proficient in Python, Scheme, and object oriented languages
