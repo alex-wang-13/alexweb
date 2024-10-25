@@ -21,7 +21,7 @@ const Scrabble = () => {
                 const data = await response.json();
 
                 setDataList(data);
-                setIndexNum(num => num + 1);
+                setIndexNum(num => (num + 1) % 1000);
                 setIsLoaded(true);
             } catch (error) {
                 console.log('Could not fetch word list', error);
@@ -62,6 +62,8 @@ const Scrabble = () => {
             } else if (key === 'TAB') {
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
+            } else if (key === 'ENTER') {
+                setIndexNum(num => (num + 1) % 1000);
             }
         };
 
@@ -137,7 +139,7 @@ const Scrabble = () => {
         };
 
         if (arraysEqual(userSolve, dataList[indexNum].word.split(''))) {
-            setIndexNum(num => num + 1);
+            setIndexNum(num => (num + 1) % 1000);
             setIsRevealed(false);
         }
     }, [userSolve]);
@@ -193,6 +195,7 @@ const Scrabble = () => {
                         <div>
                             <p>{dataList[indexNum].word}</p>
                             <p className="text-muted">{dataList[indexNum].definition}</p>
+                            <p className="text-muted">{dataList[indexNum + 1].word}</p>
                         </div>
                     ) : (
                         <div className="w-100"></div>
