@@ -23,21 +23,17 @@ const PostList = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Posts</h2>
+      <h1>Posts</h1>
       {postList.length === 0 ? (
-        <p>No posts available</p>
+        <p className="text-center py-5 my-5">No posts available</p>
       ) : (
-        <ul className="list-group">
+        <ul className="list-group my-4">
           {postList.map((post) => (
             <li key={post._id} className="list-group-item">
               <Link to={`/posts/${post._id}`} style={{ color: "inherit", textDecoration: "inherit" }}>
                 <h3>{post.title}</h3>
                 <p className="small text-muted">{plainDate}</p>
-                {post.content.length > 100 ? (
-                  <p className="fs-6 text-muted">{post.content.substring(0, 100)}...</p>
-                ) : (
-                  <p className="fs-6 text-muted">{post.content}</p>
-                )}
+                <p className="fs-6 text-muted text-truncate">{post.content}</p>
               </Link>
             </li>
           ))}
