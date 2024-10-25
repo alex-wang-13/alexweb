@@ -39,19 +39,19 @@ const Home = () => {
         <h3>Technologies I Work With</h3>
         <div className="row text-center align-items-center">
           <div className="col-md-3">
-            <img src="images/js-logo.png" alt="JavaScript Logo" className="img-fluid" />
+            <img src="images/js-logo.png" alt="JavaScript Logo" className="img-fluid rounded img-thumbnail" />
             <p>JavaScript</p>
           </div>
           <div className="col-md-3">
-            <img src="images/react-logo.png" alt="React Logo" className="img-fluid" />
+            <img src="images/react-logo.png" alt="React Logo" className="img-fluid rounded img-thumbnail" />
             <p>React</p>
           </div>
           <div className="col-md-3">
-            <img src="images/node-logo.png" alt="Node.js Logo" className="img-fluid" />
+            <img src="images/node-logo.png" alt="Node.js Logo" className="img-fluid rounded img-thumbnail" />
             <p>Node.js</p>
           </div>
           <div className="col-md-3">
-            <img src="images/mongodb-logo.png" alt="MongoDB Logo" className="img-fluid" />
+            <img src="images/mongodb-logo.png" alt="MongoDB Logo" className="img-fluid rounded img-thumbnail" />
             <p>MongoDB</p>
           </div>
         </div>
