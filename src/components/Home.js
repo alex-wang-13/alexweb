@@ -39,21 +39,90 @@ const Home = () => {
         <h3>Technologies I Work With</h3>
         <div className="row text-center align-items-center">
           <div className="col-md-3">
-            <img src="images/js-logo.png" alt="JavaScript Logo" className="img-fluid rounded img-thumbnail" />
+            <img src="images/js-logo.png" alt="JavaScript Logo" className="img-fluid rounded img-thumbnail" style={{ width: "150px", height: "150px" }} />
             <p>JavaScript</p>
           </div>
           <div className="col-md-3">
-            <img src="images/react-logo.png" alt="React Logo" className="img-fluid rounded img-thumbnail" />
+            <img src="images/react-logo.png" alt="React Logo" className="img-fluid rounded img-thumbnail" style={{ width: "150px", height: "150px" }} />
             <p>React</p>
           </div>
           <div className="col-md-3">
-            <img src="images/node-logo.png" alt="Node.js Logo" className="img-fluid rounded img-thumbnail" />
+            <img src="images/node-logo.png" alt="Node.js Logo" className="img-fluid rounded img-thumbnail" style={{ width: "150px", height: "150px" }} />
             <p>Node.js</p>
           </div>
           <div className="col-md-3">
-            <img src="images/mongodb-logo.png" alt="MongoDB Logo" className="img-fluid rounded img-thumbnail" />
+            <img src="images/mongodb-logo.png" alt="MongoDB Logo" className="img-fluid rounded img-thumbnail" style={{ width: "150px", height: "150px" }} />
             <p>MongoDB</p>
           </div>
+        </div>
+      </div>
+
+      {/* Experience Section */}
+      <div className="mt-5">
+        <h2>Projects & Experience</h2>
+
+        <div className="project">
+          <p>
+            <span className="fw-bold">University Budget Sheet Bot.</span> Developed a financial bot that automates budget tracking for the Finance Committee, updating revenue
+            and purchase data in real time. The bot's security features adapt user access based on roles, ensuring
+            data protection for sensitive information.
+          </p>
+        </div>
+
+        <div className="project">
+          <p>
+            <span className="fw-bold">Scheme Language Interpreter.</span> Built a Scheme-like interpreter capable of handling complex language structures, including recursive
+            functions and exception management. Leveraged tail call optimization and rigorous testing to ensure
+            consistent handling of parameter mismatches and function closures.
+          </p>
+        </div>
+
+        <div className="project">
+          <p>
+            <span className="fw-bold">Eight Puzzle Solver.</span> Created a GUI-based puzzle solver using Pygame, implementing the A* algorithm to find optimal solutions
+            quickly. Enhanced the user experience with intuitive controls and a heuristic approach, which reduced
+            search times and improved interaction.
+          </p>
+        </div>
+
+        <div className="experience">
+          <p>
+            <span className="fw-bold">Generative AI Externship at Cognizant.</span> Conducted accuracy comparisons across convolutional neural networks and presented findings to peers and
+            mentors. Applied efficient fine-tuning techniques to improve model performance with minimal resources,
+            contributing to advancements in generative AI.
+          </p>
+        </div>
+
+        <div className="experience">
+          <p>
+            <span className="fw-bold">Algorithms Teaching Assistant.</span> Provided academic support for algorithms students, including mock interviews and one-on-one tutoring,
+            boosting average exam scores by 15%. Organized review sessions that clarified core concepts and improved
+            students' problem-solving skills.
+          </p>
+        </div>
+
+        <div className="experience">
+          <p>
+            <span className="fw-bold">Intro to Programming Teaching Assistant.</span> Tutored students weekly on programming fundamentals, leading to a 20% increase in exam scores. Created
+            effective quizzes and projects focused on algorithm design and signal processing, promoting deeper
+            understanding.
+          </p>
+        </div>
+
+        <div className="leadership">
+          <p>
+            <span className="fw-bold">Finance Co-Chair, University Program Board.</span> Implemented bulk purchasing strategies that reduced annual costs by 20%, managing a budget of over
+            $435,000 across various university programs. Developed new budgeting systems to optimize future fund
+            allocations.
+          </p>
+        </div>
+
+        <div className="leadership">
+          <p>
+            <span className="fw-bold">Secretary, Society of Industrial & Applied Mathematics.</span> Coordinated monthly chapter meetings and tutorials for students on tech topics like Python and MATLAB.
+            Compiled a newsletter highlighting research conferences and free journal access, engaging a broader
+            student audience.
+          </p>
         </div>
       </div>
 
