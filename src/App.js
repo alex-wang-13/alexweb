@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {isMobile } from 'react-device-detect';
+import Header from './components/Header';
 import Home from './components/Home';
 import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
@@ -14,20 +14,7 @@ function App() {
   return (
     <Router>
       <div className="container-fluid">
-        <nav className="navbar navbar-expand-sm navbar-light bg-light">
-          <a className="navbar-brand" href="/">AlextheDev</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item"><a className="nav-link" id="navbarNav" href="/">Home</a></li>
-              <li className="nav-item"><a className="nav-link" id="navbarNav" href="/posts">Posts</a></li>
-              <li className="nav-item"><a className="nav-link" id={isMobile && "navbarNav"} href="/scrabble">Scrabble</a></li>
-              <li className="nav-item"><a className="nav-link" id={isMobile && "navbarNav"} href="/crossword">Crossword</a></li>
-            </ul>
-          </div>
-        </nav>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<PostList />} />
