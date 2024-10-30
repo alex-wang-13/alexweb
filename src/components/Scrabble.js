@@ -5,7 +5,7 @@ const Scrabble = () => {
     const [fill, setFill] = useState([]);
     const [rack, setRack] = useState([]);
     const [userSolve, setUserSolve] = useState([]);
-    // const [zippedFill, setZippedFill] = useState([]);
+    // const [zippedSolve, setZippedSolve] = useState([]);
 
     const [dataList, setDataList] = useState([]);
     const [indexNum, setIndexNum] = useState(-1);
@@ -78,44 +78,6 @@ const Scrabble = () => {
     useEffect(() => {
         if (!isLoaded) return;
 
-        // const getScramble = (arr) => {
-        //     const len = arr.length;
-        //     if (len < 1) return;
-
-        //     // Get a random number of 'given' tiles between 0 and len-1
-        //     // Log distribution function to prefer fewer given tiles
-        //     // see: https://en.wikipedia.org/wiki/Logarithmic_distribution
-        //     const p = 3 / 4 - 1 / len;
-        //     const upper = 1 / p;
-        //     const z = Math.random() * upper;
-        //     const pgfz = Math.abs(Math.log(1 - p * z) / Math.log(1 - p));
-        //     const numGivens = (pgfz > len - 1) ? len - 1 : Math.floor(pgfz);
-
-        //     // Get an array representing which tiles are given
-        //     const scrambleArray = Array(numGivens).fill('X');
-        //     while (scrambleArray.length < len) scrambleArray.push('_');
-        //     // Mix the array
-        //     scrambleArray.sort((_x, _y) => Math.random() - 0.5);
-        //     return scrambleArray;
-        // };
-
-        // const wordArray = dataList[indexNum].word.toUpperCase().split('');
-        // const scramble = getScramble(wordArray);
-
-        // const fill = [];
-        // const rack = [];
-        // scramble.forEach((val, index) => {
-        //     if (val === 'X') {
-        //         // Tile is given
-        //         fill.push(wordArray[index]);
-        //     } else {
-        //         // Tile is not given
-        //         fill.push('_');
-        //         rack.push(wordArray[index]);
-        //     }
-        // });
-        // rack.sort((_x, _y) => Math.random() - 0.5);
-
         const wordArray = dataList[indexNum].word.toUpperCase().split('');
         const fill = Array(wordArray.length).fill('_');
         const rack = wordArray.reverse();
@@ -160,8 +122,10 @@ const Scrabble = () => {
                         </p>
                         <p>Controls:</p>
                         <ul>
-                            <li className="list-unstyled">{'- [Space] ---> reveal answer/definition'}</li>
+                            <li className="list-unstyled">{'- [a-z] -----> enter letter'}</li>
                             <li className="list-unstyled">{'- [Delete] --> undo letter'}</li>
+                            <li className="list-unstyled">{'- [Space] ---> shuffle rack'}</li>
+                            <li className="list-unstyled">{'- [Enter] ---> reveal answer'}</li>
                             <li className="list-unstyled">{'- [Tab] -----> bring this page back'}</li>
                         </ul>
                         <p>
