@@ -143,7 +143,7 @@ const Crossword = () => {
                             are sometimes stumped by the trickier clues. For beginners, it's common to struggle with filling
                             in clues on even the easier puzzles, but the beauty of crossword solving lies in its learnability.
                             With practice, anyone can become good at recognizing patterns or wordplay. The key to improvement
-                            is learning common trivia, wordplay, and crossword meta.
+                            is learning common trivia, wordplay, and crossword meta. Clues are pulled from an NYTXW database.
                         </p>
                         <p>Controls:</p>
                         <ul>
