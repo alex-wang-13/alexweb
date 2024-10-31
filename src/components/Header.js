@@ -16,7 +16,7 @@ const Header = () => {
                             Games
                         </a>
                         <ul className="dropdown-menu">
-                            <li><a className="dropdown-item" href="/scrabble">Scrabble</a></li>
+                            <li><a className="dropdown-item" href="/anagram">Anagram</a></li>
                             <li><a className="dropdown-item" href="/crossword">Crossword</a></li>
                         </ul>
                     </li>}
