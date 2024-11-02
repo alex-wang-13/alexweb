@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Home from './components/Home';
 import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
-import Scrabble from './components/Scrabble';
+import Anagram from './components/Anagram';
 import Crossword from './components/Crossword';
 import Compose from './components/Compose';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/posts" element={<PostList />} />
           <Route path="/posts/:id" element={<PostDetails />} />
-          <Route path="/scrabble" element={<Scrabble />} />
+          <Route path="/anagram" element={<Anagram />} />
           <Route path="/crossword" element={<Crossword />} />
           <Route path="/compose" element={<Compose />} />
         </Routes>

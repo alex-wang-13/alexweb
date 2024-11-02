@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const Scrabble = () => {
+const Anagram = () => {
 
     const [fill, setFill] = useState([]);
     const [rack, setRack] = useState([]);
@@ -171,4 +171,4 @@ const Scrabble = () => {
     );
 };
 
-export default Scrabble;
+export default Anagram;
