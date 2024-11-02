@@ -5,7 +5,8 @@ const Scrabble = () => {
     const [fill, setFill] = useState([]);
     const [rack, setRack] = useState([]);
     const [userSolve, setUserSolve] = useState([]);
-    // const [zippedSolve, setZippedSolve] = useState([]);
+    const [zippedSolve, setZippedSolve] = useState([]);
+    const [zippedTrigger, setZippedTrigger] = useState([]);
 
     const [dataList, setDataList] = useState([]);
     const [indexNum, setIndexNum] = useState(-1);
@@ -17,7 +18,7 @@ const Scrabble = () => {
         const fetchData = async () => {
             try {
                 // Try to get 1000 words from Scrabble dictionary
-                const response = await fetch('https://alexwebserver.onrender.com/scrabble');
+                const response = await fetch('https://alexwebserver.onrender.com/anagram');
                 const data = await response.json();
 
                 setDataList(data);
@@ -112,7 +113,7 @@ const Scrabble = () => {
             {isDescribed ? (
                 <div className="container mt-5 font-monospace">
                     <div className="row align-items-center font-monospace">
-                        <h1 className="fs-1">Scrabble</h1>
+                        <h1 className="fs-1">Anagram</h1>
                         <p className="pt-5">
                             In Scrabble, a "bingo" refers to when a player uses all seven of their tiles in a single turn,
                             earning 50 bonus points. Finding bingos are an essential part of Scrabble gameplay and can be
