@@ -189,7 +189,6 @@ const Anagram = () => {
                     </div>
                     {isRevealed && isLoaded ? (
                         <div className="text-center">
-                            <p>{dataList[indexNum].word}</p>
                             <p className="text-muted">{dataList[indexNum].definition}</p>
                         </div>
                     ) : (
