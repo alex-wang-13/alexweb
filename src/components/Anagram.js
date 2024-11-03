@@ -58,15 +58,25 @@ const Anagram = () => {
                 // Remove key from rack
                 setRack(rack.filter((_val, ind) => ind !== rackIndex));
             } else if (key === ' ') {
-                // Do not allow definition toggle on description page
-                if (!isDescribed) setIsRevealed(!isRevealed);
+                // Shuffle the rack
+                setRack(rack => rack.toSorted((_x, _y) => Math.random() - 0.5));
+                
+                // Allow press of 'SPACE' to get next word
+                if (!isModifier && isWordDisplayed) {
+                    setIndexNum(num => (num + 1) % 1000);
+                    setIsRevealed(false);
+                    setIsWordDisplayed(false);
+                }
             } else if (key === 'TAB') {
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
             } else if (key === 'ENTER') {
-                setUserSolve(dataList[indexNum].word.split(''));
-                setRack([]);
-
+                if (!isDescribed) {
+                    // Do not allow definition toggle on description page
+                    setIsRevealed(!isRevealed);
+                    setUserSolve(dataList[indexNum].word.split(''));
+                    setRack([]);
+                }
                 // Allow double-press of 'ENTER' to get next word
                 if (!isModifier && isWordDisplayed) {
                     setIndexNum(num => (num + 1) % 1000);
@@ -159,7 +169,7 @@ const Anagram = () => {
                     <div className="text-center my-5 py-5 font-monospace">
                         {isLoaded ? (
                             <div>
-                                <div className="display-2" style={{color: isWordDisplayed && '#32a852'}}>
+                                <div className="display-2" style={{ color: isWordDisplayed && '#32a852' }}>
                                     {(userSolve.length < fill.length) ? (
                                         userSolve.concat(Array(fill.length - userSolve.length).fill('_')).join(' ')
                                     ) : (
@@ -178,7 +188,7 @@ const Anagram = () => {
                         )}
                     </div>
                     {isRevealed && isLoaded ? (
-                        <div>
+                        <div className="text-center">
                             <p>{dataList[indexNum].word}</p>
                             <p className="text-muted">{dataList[indexNum].definition}</p>
                         </div>
