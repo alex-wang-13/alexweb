@@ -5,6 +5,7 @@ const Anagram = () => {
     const [fill, setFill] = useState([]);
     const [rack, setRack] = useState([]);
     const [userSolve, setUserSolve] = useState([]);
+    const [anagramList, setAnagramList] = useState('');
     const [isWordDisplayed, setIsWordDisplayed] = useState(false);
 
     const [dataList, setDataList] = useState([]);
@@ -60,7 +61,7 @@ const Anagram = () => {
             } else if (key === ' ') {
                 // Shuffle the rack
                 setRack(rack => rack.toSorted((_x, _y) => Math.random() - 0.5));
-                
+
                 // Allow press of 'SPACE' to get next word
                 if (!isModifier && isWordDisplayed) {
                     setIndexNum(num => (num + 1) % 1000);
@@ -108,9 +109,11 @@ const Anagram = () => {
         const rack = wordArray.reverse();
         rack.sort((_x, _y) => Math.random() - 0.5);
 
+        // Setup next word
         setFill(fill);
         setRack(rack);
         setUserSolve([]);
+        setAnagramList(dataList[indexNum].anagrams.filter(x => x !== dataList[indexNum].word).join(', '));
     }, [indexNum]);
 
     useEffect(() => {
@@ -193,6 +196,7 @@ const Anagram = () => {
                     {isRevealed && isLoaded ? (
                         <div className="text-center">
                             <p className="text-muted">{dataList[indexNum].definition}</p>
+                            <p className="text-muted">{anagramList && `Anagrams of "${dataList[indexNum].word}": ` + anagramList}</p>
                         </div>
                     ) : (
                         <div className="w-100"></div>
