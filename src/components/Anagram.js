@@ -5,8 +5,7 @@ const Anagram = () => {
     const [fill, setFill] = useState([]);
     const [rack, setRack] = useState([]);
     const [userSolve, setUserSolve] = useState([]);
-    const [zippedSolve, setZippedSolve] = useState([]);
-    const [zippedTrigger, setZippedTrigger] = useState([]);
+    const [isWordDisplayed, setIsWordDisplayed] = useState(false);
 
     const [dataList, setDataList] = useState([]);
     const [indexNum, setIndexNum] = useState(-1);
@@ -37,11 +36,12 @@ const Anagram = () => {
 
         const handleKeydown = (e) => {
             const key = e.key.toUpperCase();
+            const isModifier = e.getModifierState(e.key);
 
-            // Retract description page on any key press
-            setIsDescribed(false);
-
-            if (key === 'BACKSPACE' || key === 'DELETE') {
+            // Retract description page on any key press and ignore key action
+            if (isDescribed) {
+                setIsDescribed(false);
+            } else if (key === 'BACKSPACE' || key === 'DELETE') {
                 if (userSolve.length > 0) {
                     const rackLetter = userSolve[userSolve.length - 1];
 
@@ -64,8 +64,22 @@ const Anagram = () => {
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
             } else if (key === 'ENTER') {
-                setIndexNum(num => (num + 1) % 1000);
-                setIsDescribed(false);
+                setUserSolve(dataList[indexNum].word.split(''));
+                setRack([]);
+
+                // Allow double-press of 'ENTER' to get next word
+                if (!isModifier && isWordDisplayed) {
+                    setIndexNum(num => (num + 1) % 1000);
+                    setIsRevealed(false);
+                    setIsWordDisplayed(false);
+                }
+            } else {
+                // Get next word if word already displayed
+                if (!isModifier && isWordDisplayed) {
+                    setIndexNum(num => (num + 1) % 1000);
+                    setIsRevealed(false);
+                    setIsWordDisplayed(false);
+                }
             }
         };
 
@@ -103,8 +117,14 @@ const Anagram = () => {
         };
 
         if (arraysEqual(userSolve, dataList[indexNum].word.split(''))) {
-            setIndexNum(num => (num + 1) % 1000);
-            setIsRevealed(false);
+            if (isWordDisplayed) {
+                setIndexNum(num => (num + 1) % 1000);
+                setIsRevealed(false);
+                setIsWordDisplayed(false);
+            } else {
+                setIsWordDisplayed(true);
+                setIsRevealed(true);
+            }
         }
     }, [userSolve]);
 
