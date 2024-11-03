@@ -159,7 +159,7 @@ const Anagram = () => {
                     <div className="text-center my-5 py-5 font-monospace">
                         {isLoaded ? (
                             <div>
-                                <div className="display-2">
+                                <div className="display-2" style={{color: isWordDisplayed && '#32a852'}}>
                                     {(userSolve.length < fill.length) ? (
                                         userSolve.concat(Array(fill.length - userSolve.length).fill('_')).join(' ')
                                     ) : (
