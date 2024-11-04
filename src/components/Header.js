@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { redirect } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import { useAppContext } from '../AppContext';
 
 const Header = () => {
-    const [profile, setProfile] = useState([]);
+    const {profileData, setProfileData} = useAppContext();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem('token');
+        setProfileData([]);
+        return redirect('/');
+    };
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
-                console.log(token)
                 const response = await fetch('https://alexwebserver.onrender.com/auth/profile', {
                     method: 'GET',
                     headers: {
@@ -19,12 +27,10 @@ const Header = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    setProfile(data);
-                } else {
-                    setProfile([]);
+                    setProfileData(data);
                 }
             } catch (error) {
-                setProfile([]);
+                setProfileData([]);
             }
         }
 
@@ -54,9 +60,10 @@ const Header = () => {
                             </li>
                         }
                     </ul>
-                    {profile.username ? (
+                    {profileData.username ? (
                         <div className="navbar-nav ms-auto">
-                            <a href="/" className="nav-link">{'Welcome, ' + profile.username}</a>
+                            <a href="/profile" className="nav-link">Profile</a>
+                            <a href="/" className="nav-link"><button className="btn" onClick={handleLogout}>Logout</button></a>
                         </div>
                     ) : (
                         < div className="navbar-nav ms-auto">
