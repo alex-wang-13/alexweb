@@ -1,33 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
 const Header = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [profile, setProfile] = useState([]);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('https://alexwebserver.onrender.com/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-            const data = await response.json();
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                console.log(token)
+                const response = await fetch('https://alexwebserver.onrender.com/auth/profile', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // Add token to header
+                        'Content-Type': 'application/json'
+                    },
+                });
 
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                setIsLoggedIn(true);
-            } else {
-                setIsLoggedIn(false);
+                if (response.ok) {
+                    const data = await response.json();
+                    setProfile(data);
+                } else {
+                    setProfile([]);
+                }
+            } catch (error) {
+                setProfile([]);
             }
-        } catch (error) {
-            setIsLoggedIn(false);
         }
-    };
+
+        fetchProfile();
+    }, []);
 
     return (
         <nav className="navbar navbar-expand-sm navbar-light bg-light p-3">
@@ -52,10 +54,16 @@ const Header = () => {
                             </li>
                         }
                     </ul>
-                    <div className="navbar-nav ms-auto">
-                        <a href="/register" className="nav-link">Sign Up</a>
-                        <a href="/login" className="nav-link">Login</a>
-                    </div>
+                    {profile.username ? (
+                        <div className="navbar-nav ms-auto">
+                            <a href="/" className="nav-link">{'Welcome, ' + profile.username}</a>
+                        </div>
+                    ) : (
+                        < div className="navbar-nav ms-auto">
+                            <a href="/register" className="nav-link">Sign Up</a>
+                            <a href="/login" className="nav-link">Login</a>
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>
