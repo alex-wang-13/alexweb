@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../AppContext';
 
 const Form = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    const {setProfileData} = useAppContext();
     const navigate = useNavigate();
 
-    const handelSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!username || !password) {
             setError('Please fill out all fields');
@@ -24,9 +27,13 @@ const Form = (props) => {
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    if (props.action === 'Login')
+                    if (props.action === 'Login') {
                         localStorage.setItem('token', data.token);
-                    navigate('/'); // Go to home
+                        setProfileData(data);
+                        navigate('/'); // Go to home
+                    }
+                    if (props.action === 'Register')
+                        navigate('/login');
                 } else {
                     setError(`${props.action} failed.`);
                 }
@@ -42,9 +49,9 @@ const Form = (props) => {
                 <div className="col-md-4">
                     <h2 className="text-center text-capitalized">{props.action}</h2>
                     {error && <div className="alert alert-danger">{error}</div>}
-                    <form onSubmit={handelSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-3">
-                            <label htmlFor="email" className="form-label">Username</label>
+                            <label htmlFor="username" className="form-label">Username</label>
                             <input
                                 type="text"
                                 className="form-control"
