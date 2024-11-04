@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react';
 
 const Crossword = () => {
-
-    const [fill, setFill] = useState([]);
-    const [userSolve, setUserSolve] = useState([]);
-    const [zippedSolve, setZippedSolve] = useState([]);
-    const [zippedTrigger, setZippedTrigger] = useState(false);
-
     const [dataList, setDataList] = useState([]);
     const [indexNum, setIndexNum] = useState(-1);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isDescribed, setIsDescribed] = useState(true);
 
+    const [fill, setFill] = useState([]);
+    const [userSolve, setUserSolve] = useState([]);
+    const [paddedSolve, setPaddedSolve] = useState([]);
+    const [isWordDisplayed, setIsWordDisplayed] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Try to get 1000 words from Scrabble dictionary
+                // Try to get 1000 words from Crossword database
                 const response = await fetch('https://alexwebserver.onrender.com/crossword');
                 const data = await response.json();
 
@@ -35,47 +34,43 @@ const Crossword = () => {
 
         const handleKeydown = (e) => {
             const key = e.key.toUpperCase();
+            const isModifier = e.getModifierState(e.key);
 
-            // Remove description on key press
-            setIsDescribed(false);
-
-            if (key === 'BACKSPACE' || key === 'DELETE') {
+            // Retract description page on any key press and ignore key action
+            if (isDescribed) {
+                setIsDescribed(false);
+            } else if (key === 'BACKSPACE' || key === 'DELETE') {
                 if (userSolve.length > 0) {
                     // Remove key from solve
                     setUserSolve(userSolve.slice(0, userSolve.length - 1));
                 }
-            } else if (/^[a-zA-Z0-9]$/.test(key)) {
-                // Add key to solve
-                if (userSolve.length < fill.length) {
+            } else if (/^[a-zA-Z]$/.test(key)) {
+                // Add key to solve if solve if space is not full
+                if (userSolve.length < fill.filter(x => x === '_').length) {
                     setUserSolve(solve => [...solve, key]);
                 }
-            } else if (key === ' ' && !isDescribed) {
-                if (fill.find(x => x === '_')) {
-                    // Add a random letter to the fill
-                    do {
-                        var index = Math.floor(Math.random() * (fill.length));
-                    } while (fill[index] !== '_');
-                    // Update the fill with a revealed letter
-                    setFill([
-                        ...fill.slice(0, index),
-                        dataList[indexNum].word[index],
-                        ...fill.slice(index + 1)
-                    ]);
-                    // Force update of zippedSolve
-                    setZippedTrigger(!zippedTrigger);
-                } else {
-                    setIndexNum(num => (num + 1) % 1000);
-                    setIsDescribed(false);
-                }
+            } else if (key === ' ') {
+
             } else if (key === 'TAB') {
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
             } else if (key === 'ENTER') {
-                if (fill.find(x => x === '_')) {
-                    setFill(dataList[indexNum].word.split(''));
-                } else {
+                if (!isDescribed) {
+                    // Do not allow definition toggle on description page
+                    setUserSolve(dataList[indexNum].word.split(''));
+                    setFill(new Array(dataList[indexNum].length).fill('_'));
+                    
+                }
+                // Allow double-press of 'ENTER' to get next word
+                if (!isModifier && isWordDisplayed) {
                     setIndexNum(num => (num + 1) % 1000);
-                    setIsDescribed(false);
+                    setIsWordDisplayed(false);
+                }
+            } else {
+                // Get next word if word already displayed
+                if (!isModifier && isWordDisplayed) {
+                    setIndexNum(num => (num + 1) % 1000);
+                    setIsWordDisplayed(false);
                 }
             }
         };
@@ -90,47 +85,42 @@ const Crossword = () => {
     useEffect(() => {
         if (!isLoaded) return;
 
-        const data = dataList[indexNum];
-        if (data.clue.includes('Across') || data.clue.includes('Down')) {
-            // Skip referential clues
-            setIndexNum(num => num + 1);
-        } else {
-            // Update fill
-            setFill(Array(data.length).fill('_'));
-            // Reset solve when indexNum increments
-            setZippedSolve([]);
-            setUserSolve([]);
-        }
+        // Setup next word
+        setFill(new Array(dataList[indexNum].length).fill('_'));
+        setPaddedSolve(new Array(dataList[indexNum].length).fill('_'));
+        setUserSolve([]);
+        console.log(indexNum);
     }, [indexNum]);
 
     useEffect(() => {
         if (!isLoaded) return;
 
-        const arraysEqual = (arr, brr) => {
-            if (arr.length !== brr.length) return false;
+        const solve = [];
 
-            // Check if each element is the same
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i] !== brr[i]) return false;
-            }
-            return true;
-        };
-
-        // Get the current state
         var index = 0;
-        const solve = fill.map(letter => {
+        fill.forEach(letter => {
             if (letter === '_' && index < userSolve.length) {
-                return userSolve[index++];
+                solve.push(userSolve[index++]);
             } else {
-                return letter;
+                solve.push(letter);
             }
         });
-        setZippedSolve(solve);
 
-        if (arraysEqual(solve, dataList[indexNum].word.split(''))) {
-            setIndexNum(num => (num + 1) % 1000);
+        setPaddedSolve(solve);
+    }, [userSolve]);
+
+    useEffect(() => {
+        if (!isLoaded) return;
+
+        if (JSON.stringify(paddedSolve) === JSON.stringify(dataList[indexNum].word.split(''))) {
+            if (isWordDisplayed) {
+                setIndexNum(num => (num + 1) % 1000);
+                setIsWordDisplayed(false);
+            } else {
+                setIsWordDisplayed(true);
+            }
         }
-    }, [userSolve, zippedTrigger]);
+    }, [paddedSolve]);
 
     return (
         <div>
@@ -163,15 +153,15 @@ const Crossword = () => {
                     <div className="text-center my-5 py-5 font-monospace">
                         {isLoaded ? (
                             <div>
-                                <div className="display-2">
-                                    {zippedSolve.join(' ')}
+                                <div className="display-3" style={{ color: isWordDisplayed && '#32a852' }}>
+                                    {paddedSolve.join(' ')}
                                 </div>
                                 <br />
                                 <div className="w-100"></div>
                                 <p className="text-muted">{'clue: ' + dataList[indexNum].clue}</p>
                             </div>
                         ) : (
-                            <div className="display-2">
+                            <div className="display-3">
                                 Loading...
                             </div>
                         )}
