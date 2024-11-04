@@ -10,6 +10,7 @@ const Crossword = () => {
     const [userSolve, setUserSolve] = useState([]);
     const [paddedSolve, setPaddedSolve] = useState([]);
     const [isWordDisplayed, setIsWordDisplayed] = useState(false);
+    const [isHardMode, setIsHardMode] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,14 +41,14 @@ const Crossword = () => {
             if (key === 'TAB') {
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
-            } else if (!isModifier && isWordDisplayed) {
-                setIndexNum(num => (num + 1) % 1000);
-                setIsWordDisplayed(false);
             }
 
             // Retract description page on any key press and ignore key action
             if (isDescribed) {
                 setIsDescribed(false);
+            } else if (!isModifier && isWordDisplayed) {
+                setIndexNum(num => (num + 1) % 1000);
+                setIsWordDisplayed(false);
             } else if (key === 'BACKSPACE' || key === 'DELETE') {
                 if (userSolve.length > 0) {
                     // Remove key from solve
@@ -59,24 +60,7 @@ const Crossword = () => {
                     setUserSolve(solve => [...solve, key]);
                 }
             } else if (key === ' ') {
-                // // Reveal a letter if the word is not solved
-                // if (!isWordDisplayed) {
-                //     // Get a 'blank' index
-                //     const n = Math.floor(Math.random() * fill.filter(x => x === '_').length);
-                //     let count = 0;
-                //     let index = 0;
-                //     fill.forEach((x, i) => {
-                //         if (x === '_') {
-                //             if (count++ === n) index = i;
-                //         }
-                //     });
-
-                //     setFill([
-                //         ...fill.slice(0, index),
-                //         dataList[indexNum].word[index],
-                //         ...fill.slice(index + 1),
-                //     ]);
-                // }
+                setIsHardMode(!isHardMode);
             } else if (key === 'ENTER') {
                 if (!isDescribed) {
                     // Do not allow definition toggle on description page
@@ -111,7 +95,7 @@ const Crossword = () => {
         };
 
         // Pick a few random indices from the answer to hide
-        const indices = pickRandomIndices(dataList[indexNum].word.split(''), 0.5);
+        const indices = pickRandomIndices(dataList[indexNum].word.split(''), isHardMode ? 0.25 : 0.75);
 
         // Setup next word
         setFill(dataList[indexNum].word.split('').map((x, i) => indices.includes(i) ? x : '_'));
@@ -166,8 +150,8 @@ const Crossword = () => {
                         <ul>
                             <li className="list-unstyled">{'- [a-z] -----> enter letter'}</li>
                             <li className="list-unstyled">{'- [Delete] --> undo letter'}</li>
-                            <li className="list-unstyled">{'- [Space] ---> reveal letter/answer'}</li>
                             <li className="list-unstyled">{'- [Enter] ---> reveal answer'}</li>
+                            <li className="list-unstyled">{'- [Space] ---> toggle hard mode'}</li>
                             <li className="list-unstyled">{'- [Tab] -----> bring this page back'}</li>
                         </ul>
                         <p>
@@ -180,12 +164,20 @@ const Crossword = () => {
                     <div className="text-center my-5 py-5 font-monospace">
                         {isLoaded ? (
                             <div>
+                                <p className={'fs-5' + (!isWordDisplayed && 'text-muted')} style={{ color: isWordDisplayed && '#32a852' }}>
+                                    {dataList[indexNum].clue}
+                                </p>
                                 <div className="display-3" style={{ color: isWordDisplayed && '#32a852' }}>
                                     {paddedSolve.join(' ')}
                                 </div>
                                 <br />
                                 <div className="w-100"></div>
-                                <p className="text-muted">{'clue: ' + dataList[indexNum].clue}</p>
+                                {isHardMode ? (
+                                    <p className="text-muted pt-5 mt-5">(hard mode)</p>
+                                ) : (
+                                    <p className="text-muted pt-5 mt-5">(zen mode)</p>
+                                )
+                                }
                             </div>
                         ) : (
                             <div className="display-3">
