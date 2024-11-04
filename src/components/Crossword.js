@@ -137,7 +137,7 @@ const Crossword = () => {
                         </p>
                         <p>Controls:</p>
                         <ul>
-                            <li className="list-unstyled">{'- [a-zA-Z] --> enter letter'}</li>
+                            <li className="list-unstyled">{'- [a-z] -----> enter letter'}</li>
                             <li className="list-unstyled">{'- [Delete] --> undo letter'}</li>
                             <li className="list-unstyled">{'- [Space] ---> reveal letter/answer'}</li>
                             <li className="list-unstyled">{'- [Enter] ---> reveal answer'}</li>
