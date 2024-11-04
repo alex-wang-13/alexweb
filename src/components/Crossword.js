@@ -36,6 +36,15 @@ const Crossword = () => {
             const key = e.key.toUpperCase();
             const isModifier = e.getModifierState(e.key);
 
+            // If key not tab, allow action to next word
+            if (key === 'TAB') {
+                e.preventDefault();
+                setIsDescribed(!isDescribed);
+            } else if (!isModifier && isWordDisplayed) {
+                setIndexNum(num => (num + 1) % 1000);
+                setIsWordDisplayed(false);
+            }
+
             // Retract description page on any key press and ignore key action
             if (isDescribed) {
                 setIsDescribed(false);
@@ -51,26 +60,11 @@ const Crossword = () => {
                 }
             } else if (key === ' ') {
 
-            } else if (key === 'TAB') {
-                e.preventDefault();
-                setIsDescribed(!isDescribed);
             } else if (key === 'ENTER') {
                 if (!isDescribed) {
                     // Do not allow definition toggle on description page
                     setUserSolve(dataList[indexNum].word.split(''));
                     setFill(new Array(dataList[indexNum].length).fill('_'));
-                    
-                }
-                // Allow double-press of 'ENTER' to get next word
-                if (!isModifier && isWordDisplayed) {
-                    setIndexNum(num => (num + 1) % 1000);
-                    setIsWordDisplayed(false);
-                }
-            } else {
-                // Get next word if word already displayed
-                if (!isModifier && isWordDisplayed) {
-                    setIndexNum(num => (num + 1) % 1000);
-                    setIsWordDisplayed(false);
                 }
             }
         };

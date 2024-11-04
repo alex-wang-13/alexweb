@@ -39,6 +39,16 @@ const Anagram = () => {
             const key = e.key.toUpperCase();
             const isModifier = e.getModifierState(e.key);
 
+            // If key not tab, allow action to next word
+            if (key === 'TAB') {
+                e.preventDefault();
+                setIsDescribed(!isDescribed);
+            } else if (!isModifier && isWordDisplayed && key !== 'TAB') {
+                setIndexNum(num => (num + 1) % 1000);
+                setIsRevealed(false);
+                setIsWordDisplayed(false);
+            }
+
             // Retract description page on any key press and ignore key action
             if (isDescribed) {
                 setIsDescribed(false);
@@ -61,35 +71,15 @@ const Anagram = () => {
             } else if (key === ' ') {
                 // Shuffle the rack
                 setRack(rack => rack.toSorted((_x, _y) => Math.random() - 0.5));
-
-                // Allow press of 'SPACE' to get next word
-                if (!isModifier && isWordDisplayed) {
-                    setIndexNum(num => (num + 1) % 1000);
-                    setIsRevealed(false);
-                    setIsWordDisplayed(false);
-                }
-            } else if (key === 'TAB') {
-                e.preventDefault();
-                setIsDescribed(!isDescribed);
+            } else if (key === 'SHIFT') {
+                // Shuffle the rack
+                setRack(rack => rack.toSorted());
             } else if (key === 'ENTER') {
                 if (!isDescribed) {
                     // Do not allow definition toggle on description page
                     setIsRevealed(!isRevealed);
                     setUserSolve(dataList[indexNum].word.split(''));
                     setRack([]);
-                }
-                // Allow double-press of 'ENTER' to get next word
-                if (!isModifier && isWordDisplayed) {
-                    setIndexNum(num => (num + 1) % 1000);
-                    setIsRevealed(false);
-                    setIsWordDisplayed(false);
-                }
-            } else {
-                // Get next word if word already displayed
-                if (!isModifier && isWordDisplayed) {
-                    setIndexNum(num => (num + 1) % 1000);
-                    setIsRevealed(false);
-                    setIsWordDisplayed(false);
                 }
             }
         };
@@ -160,6 +150,7 @@ const Anagram = () => {
                             <li className="list-unstyled">{'- [a-z] -----> enter letter'}</li>
                             <li className="list-unstyled">{'- [Delete] --> undo letter'}</li>
                             <li className="list-unstyled">{'- [Space] ---> shuffle rack'}</li>
+                            <li className="list-unstyled">{'- [Shift] ---> order rack'}</li>
                             <li className="list-unstyled">{'- [Enter] ---> reveal answer'}</li>
                             <li className="list-unstyled">{'- [Tab] -----> bring this page back'}</li>
                         </ul>
