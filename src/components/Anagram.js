@@ -130,9 +130,7 @@ const Anagram = () => {
         };
 
         // Check if user's solve is in the list of anagrams
-        const temp = dataList[indexNum].anagrams.includes(userSolve.join(''));
-        //if (arraysEqual(userSolve, dataList[indexNum].word.split(''))) {
-        if (temp) {
+        if (dataList[indexNum].anagrams.includes(userSolve.join(''))) {
             if (isWordDisplayed) {
                 setIndexNum(num => (num + 1) % 1000);
                 setIsRevealed(false);
