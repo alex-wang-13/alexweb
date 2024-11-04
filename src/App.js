@@ -7,6 +7,8 @@ import PostDetails from './components/PostDetails';
 import Anagram from './components/Anagram';
 import Crossword from './components/Crossword';
 import Compose from './components/Compose';
+import Login from './components/Login';
+import Register from './components/Register';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,6 +24,8 @@ function App() {
           <Route path="/anagram" element={<Anagram />} />
           <Route path="/crossword" element={<Crossword />} />
           <Route path="/compose" element={<Compose />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
