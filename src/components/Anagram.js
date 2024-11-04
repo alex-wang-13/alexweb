@@ -39,19 +39,19 @@ const Anagram = () => {
             const key = e.key.toUpperCase();
             const isModifier = e.getModifierState(e.key);
 
-            // If key not tab, allow action to next word
-            if (key === 'TAB') {
+            // Prioritize tab function
+            if (key === 'TAB') { 
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
-            } else if (!isModifier && isWordDisplayed && key !== 'TAB') {
-                setIndexNum(num => (num + 1) % 1000);
-                setIsRevealed(false);
-                setIsWordDisplayed(false);
             }
-
+            
             // Retract description page on any key press and ignore key action
             if (isDescribed) {
                 setIsDescribed(false);
+            } else  if (!isModifier && isWordDisplayed) {
+                setIndexNum(num => (num + 1) % 1000);
+                setIsRevealed(false);
+                setIsWordDisplayed(false);
             } else if (key === 'BACKSPACE' || key === 'DELETE') {
                 if (userSolve.length > 0) {
                     const rackLetter = userSolve[userSolve.length - 1];
