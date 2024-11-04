@@ -40,15 +40,15 @@ const Anagram = () => {
             const isModifier = e.getModifierState(e.key);
 
             // Prioritize tab function
-            if (key === 'TAB') { 
+            if (key === 'TAB') {
                 e.preventDefault();
                 setIsDescribed(!isDescribed);
             }
-            
+
             // Retract description page on any key press and ignore key action
             if (isDescribed) {
                 setIsDescribed(false);
-            } else  if (!isModifier && isWordDisplayed) {
+            } else if (!isModifier && isWordDisplayed) {
                 setIndexNum(num => (num + 1) % 1000);
                 setIsRevealed(false);
                 setIsWordDisplayed(false);
@@ -164,7 +164,7 @@ const Anagram = () => {
                     <div className="text-center my-5 py-5 font-monospace">
                         {isLoaded ? (
                             <div>
-                                <div className="display-2" style={{ color: isWordDisplayed && '#32a852' }}>
+                                <div className="display-3" style={{ color: isWordDisplayed && '#32a852' }}>
                                     {(userSolve.length < fill.length) ? (
                                         userSolve.concat(Array(fill.length - userSolve.length).fill('_')).join(' ')
                                     ) : (
@@ -172,24 +172,26 @@ const Anagram = () => {
                                     )}
                                 </div>
                                 <br />
-                                <div className="display-2">
-                                    {rack.join(' ')}
-                                </div>
+                                {rack.length !== 0 &&
+                                    <div className="display-3">
+                                        {rack.join(' ')}
+                                    </div>
+                                }
+                                {isRevealed && isLoaded && (
+                                    <div className="text-center font-monospace" style={{ color: isWordDisplayed && '#32a852' }}>
+                                        <p>{dataList[indexNum].definition}</p>
+                                        <p>{anagramList && `Anagrams of "${dataList[indexNum].word}": ` + anagramList}</p>
+                                    </div>
+                                )}
                             </div>
+
                         ) : (
-                            <div className="display-2">
+                            <div className="display-3">
                                 Loading...
                             </div>
                         )}
                     </div>
-                    {isRevealed && isLoaded ? (
-                        <div className="text-center">
-                            <p className="text-muted">{dataList[indexNum].definition}</p>
-                            <p className="text-muted">{anagramList && `Anagrams of "${dataList[indexNum].word}": ` + anagramList}</p>
-                        </div>
-                    ) : (
-                        <div className="w-100"></div>
-                    )}
+
                 </div>
             )}
         </div>
