@@ -59,7 +59,24 @@ const Crossword = () => {
                     setUserSolve(solve => [...solve, key]);
                 }
             } else if (key === ' ') {
+                // // Reveal a letter if the word is not solved
+                // if (!isWordDisplayed) {
+                //     // Get a 'blank' index
+                //     const n = Math.floor(Math.random() * fill.filter(x => x === '_').length);
+                //     let count = 0;
+                //     let index = 0;
+                //     fill.forEach((x, i) => {
+                //         if (x === '_') {
+                //             if (count++ === n) index = i;
+                //         }
+                //     });
 
+                //     setFill([
+                //         ...fill.slice(0, index),
+                //         dataList[indexNum].word[index],
+                //         ...fill.slice(index + 1),
+                //     ]);
+                // }
             } else if (key === 'ENTER') {
                 if (!isDescribed) {
                     // Do not allow definition toggle on description page
@@ -79,9 +96,25 @@ const Crossword = () => {
     useEffect(() => {
         if (!isLoaded) return;
 
+        const pickRandomIndices = (arr, pct) => {
+            const maxIndices = Math.floor(arr.length * pct); // Pick a percent of the array indices
+            const numToPick = Math.floor(Math.random() * (maxIndices + 1)); // Random 0 to maxIndices
+            const indices = Array.from({ length: arr.length }, (_, i) => i); // Array of indices
+
+            // Shuffle and slice to pick random subset
+            for (let i = indices.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [indices[i], indices[j]] = [indices[j], indices[i]];
+            }
+
+            return indices.slice(0, numToPick);
+        };
+
+        // Pick a few random indices from the answer to hide
+        const indices = pickRandomIndices(dataList[indexNum].word.split(''), 0.5);
+
         // Setup next word
-        setFill(new Array(dataList[indexNum].length).fill('_'));
-        setPaddedSolve(new Array(dataList[indexNum].length).fill('_'));
+        setFill(dataList[indexNum].word.split('').map((x, i) => indices.includes(i) ? x : '_'));
         setUserSolve([]);
         console.log(indexNum);
     }, [indexNum]);
@@ -101,7 +134,7 @@ const Crossword = () => {
         });
 
         setPaddedSolve(solve);
-    }, [userSolve]);
+    }, [userSolve, fill]);
 
     useEffect(() => {
         if (!isLoaded) return;
