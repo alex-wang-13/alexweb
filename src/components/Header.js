@@ -4,7 +4,7 @@ import { isMobile } from 'react-device-detect';
 import { useAppContext } from '../AppContext';
 
 const Header = () => {
-    const {profileData, setProfileData} = useAppContext();
+    const { profileData, setProfileData } = useAppContext();
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -63,7 +63,7 @@ const Header = () => {
                     {profileData.username ? (
                         <div className="navbar-nav ms-auto">
                             <a href="/profile" className="nav-link">Profile</a>
-                            <a href="/" className="nav-link"><button className="btn" onClick={handleLogout}>Logout</button></a>
+                            <a href="/" className="nav-link" onClick={handleLogout}>Logout</a>
                         </div>
                     ) : (
                         < div className="navbar-nav ms-auto">
