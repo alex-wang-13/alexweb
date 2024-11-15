@@ -1,7 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup } from 'react-bootstrap';
+import '../styles/Board.css';
 
+const BOARD_LAYOUT = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    36, -1, -1, -1, -1, -1, -1, -1, -1, 11,
+    35, -1, -1, -1, -1, -1, -1, -1, -1, 12,
+    34, -1, -1, -1, -1, -1, -1, -1, -1, 13,
+    33, -1, -1, -1, -1, -1, -1, -1, -1, 14,
+    32, -1, -1, -1, -1, -1, -1, -1, -1, 15,
+    31, -1, -1, -1, -1, -1, -1, -1, -1, 16,
+    30, -1, -1, -1, -1, -1, -1, -1, -1, 17,
+    29, -1, -1, -1, -1, -1, -1, -1, -1, 18,
+    28, 27, 26, 25, 24, 23, 22, 21, 20, 19,
+];
 const BOARD_SIZE = 10;
+const END_VALUE = 36;
+const CODES = {
+    '🥴': 'You laughed at a funny joke, but the emotional response caused cataplexy! Your muscles go limp, and you collapse briefly. Miss your next turn to recover.',
+    '🎵': '(2 Hz LC stimulation) Your LC received has been optogenetically stimulated, boosting norepinephrine release! You feel more alert—go one down on the sleepy scale.',
+    '⚡': 'Oops! Consecutive LC stimulations overwhelmed your system, causing behavioral arrest. This mimics cataplexy-like symptoms—skip your next turn.',
+    '💉': "(Orexin injection) With an orexin boost stabilizing your arousal system, you're more awake, but orexin-deficient brains often crave food for energy. No sleepy scale movement this turn, but you need to sit out the next turn to rest.",
+    '💤': 'You miss 2 turns when the sleepy scale is full. Your narcolepsy increases the sleepy scale every turns unless you experience a special effect.',
+};
+const WIN_MSG = "Congratulations! You've reached the final step and undergone an LC transplant. This restores norepinephrine release and balances your arousal system. Your sleepy scale resets to zero, and cataplexy is no longer an obstacle. With proper LC function, you're finally able to maintain wakefulness and muscle tone. You win the game—narcolepsy is cured!";
 
 const Board = () => {
     const [playerPosition, setPlayerPosition] = useState(1);
@@ -12,44 +34,12 @@ const Board = () => {
         const roll = Math.floor(Math.random() * 6) + 1;
         setDiceRoll(roll);
         let newPosition = playerPosition + roll;
-        if (newPosition <= 100 && !isWon) {
-            newPosition = snakesAndLadders[newPosition] || newPosition;
+        if (newPosition <= END_VALUE && !isWon) {
             setPlayerPosition(newPosition);
-        }
-
-        if (newPosition == 100) {
+        } else if (newPosition >= END_VALUE) {
+            setPlayerPosition(END_VALUE);
             setIsWon(true);
         }
-    };
-
-    const snakes = {
-        16: 6,
-        47: 26,
-        49: 11,
-        56: 53,
-        62: 19,
-        64: 60,
-        87: 24,
-        93: 73,
-        95: 75,
-        98: 78
-    };
-
-    const ladders = {
-        4: 14,
-        9: 31,
-        21: 42,
-        28: 84,
-        36: 44,
-        51: 67,
-        71: 91,
-        76: 78,
-        80: 100
-    };
-
-    const snakesAndLadders = {
-        ...snakes,
-        ...ladders
     };
 
     useEffect(() => {
@@ -70,57 +60,63 @@ const Board = () => {
     });
 
     return (
-        <Container className="mt-4">
+        <Container fluid className="mt-4">
+            <Row>
+                {/* Left Panel */}
+                {/* <Col md={2} className="info-panel bg-light border p-3">
+                    <h4>Game Info</h4>
+                    <p>Player Position: {playerPosition}</p>
+                    <p>Dice Roll: {diceRoll || 'Roll to start'}</p>
+                </Col> */}
 
-            {/* Board Game */}
-            {!isWon && (
-                <div>
-                    <h1>Shoots and Ladders</h1>
+                {/* Game Board */}
+                <Col md={6}>
                     <div className="board">
                         {Array.from({ length: BOARD_SIZE }).map((_, row) => (
                             <Row key={row} className="justify-content-center">
                                 {Array.from({ length: BOARD_SIZE }).map((_, col) => {
-                                    const squareNum = BOARD_SIZE * (BOARD_SIZE - row - 1) + (row % 2 === 0 ? col + 1 : BOARD_SIZE - col);
-
-                                    // Determine if the square contains a snake or ladder
-                                    const isSnake = snakes[squareNum];
-                                    const isLadder = ladders[squareNum];
+                                    const index = row * BOARD_SIZE + col;
+                                    const squareNum = BOARD_LAYOUT[index];
 
                                     return (
                                         <Col
-                                            key={squareNum}
-                                            className={`square text-center border p-3 ${playerPosition === squareNum ? 'bg-success text-white' : ''} ${isSnake ? 'bg-danger text-white' : ''} ${isLadder ? 'bg-primary text-white' : ''}`}
+                                            key={col}
+                                            className={`square text-center border p-3 ${playerPosition === squareNum ? 'bg-success text-white' : ''
+                                                } ${squareNum === -1 ? 'blank' : ''}`}
                                         >
-                                            {squareNum}
-                                            {isSnake && <span role="img" aria-label="snake"> 🐍 {snakes[squareNum]}</span>}
-                                            {isLadder && <span role="img" aria-label="ladder"> 🪜 {ladders[squareNum]}</span>}
+                                            {squareNum !== -1 ? squareNum : ''}
                                         </Col>
                                     );
                                 })}
                             </Row>
                         ))}
                     </div>
-                    <div className="text-center mt-4">
-                        {diceRoll
-                            ? <p>You rolled: {diceRoll}</p>
-                            : <p>Click SPACE to Roll Dice</p>
-                        }
-                    </div>
-                </div>
-            )}
+                </Col>
 
-            {/* Win Screen Overlay */}
-            {isWon && (
-                <div className="win-screen-overlay align-items-center">
-                    <div className="win-screen-content text-center">
-                        <h2>Congratulations!</h2>
-                        <p>You reached the top and won the game!</p>
-                        <p>Press p to play again.</p>
-                    </div>
-                </div>
-            )}
+                {/* Right Panel */}
+                <Col md={6} className="info-panel bg-light border p-3">
+                    <h4>Instructions</h4>
+                    {(isWon) ? (
+                        <div>
+                            <p>{WIN_MSG}</p>
+                            <p>Press P to play again.</p>
+                        </div>
+                    ) : (
+                        <p>{(diceRoll) ? 'You rolled: ' + diceRoll : 'Press SPACE to roll the dice.'}</p>
+                    )}
+                    {!isWon &&
+                        <ListGroup>
+                            {Object.entries(CODES).map(([code, description]) => (
+                                <ListGroup.Item key={code}>
+                                    <strong>{code.toUpperCase()}:</strong> {description}
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    }
+                </Col>
+            </Row>
         </Container>
     );
-}
+};
 
 export default Board;
