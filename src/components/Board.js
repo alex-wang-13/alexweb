@@ -28,6 +28,7 @@ const WIN_MSG = "Congratulations! You've reached the final step and undergone an
 const Board = () => {
     const [playerPosition, setPlayerPosition] = useState(1);
     const [diceRoll, setDiceRoll] = useState(null);
+    const [isStimulated, setIsStimulated] = useState(false);
 
     const [isWon, setIsWon] = useState(false);
     const [specialSquares, setSpecialSquares] = useState(undefined);
@@ -40,7 +41,7 @@ const Board = () => {
         if (newPosition <= END_VALUE && !isWon) {
             setPlayerPosition(newPosition);
         }
-        
+
         if (newPosition >= END_VALUE) {
             setPlayerPosition(END_VALUE);
             setIsWon(true);
@@ -65,8 +66,26 @@ const Board = () => {
     });
 
     useEffect(() => {
-        if (specialSquares) setSpecialEffect(specialSquares[playerPosition - 1]);
+        if (specialSquares) {
+            const effect = specialSquares[playerPosition - 1];
+            setSpecialEffect(effect);
+            if (effect === '🎵' || effect === '⚡') {
+                setIsStimulated(true);
+            } else {
+                setIsStimulated(false);
+            }
+        }
     }, [playerPosition]);
+
+    useEffect(() => {
+        if (specialSquares) {
+            if (isStimulated) {
+                setSpecialSquares(specialSquares.map(value => (value === '🎵') ? '⚡' : value));
+            } else {
+                setSpecialSquares(specialSquares.map(value => (value === '⚡') ? '🎵' : value));
+            }
+        }
+    }, [isStimulated])
 
     useEffect(() => {
         if (!isWon) {
@@ -128,7 +147,16 @@ const Board = () => {
                     {!isWon &&
                         <ListGroup>
                             {Object.entries(CODES).map(([code, description]) => (
-                                <ListGroup.Item key={code} className={`${code === specialEffect && 'bg-success'}`}>
+                                <ListGroup.Item
+                                    key={code}
+                                    className={`
+                                        ${code === specialEffect && code === '🥴' && 'bg-primary text-white'}
+                                        ${code === specialEffect && code === '🎵' && 'bg-warning text-white'}
+                                        ${code === specialEffect && code === '⚡' && 'bg-danger text-white'}
+                                        ${code === specialEffect && code === '💉' && 'bg-info text-white'}
+                                        ${code === specialEffect && code === '💤' && 'bg-black text-white'}
+                                    `}
+                                >
                                     <strong>{code}:</strong> {description}
                                 </ListGroup.Item>
                             ))}
