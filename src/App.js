@@ -10,8 +10,6 @@ import Compose from './components/Compose';
 import Form from './components/Form';
 import Profile from './components/Profile';
 import Board from './components/Board';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
