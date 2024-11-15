@@ -28,7 +28,10 @@ const WIN_MSG = "Congratulations! You've reached the final step and undergone an
 const Board = () => {
     const [playerPosition, setPlayerPosition] = useState(1);
     const [diceRoll, setDiceRoll] = useState(null);
+
     const [isWon, setIsWon] = useState(false);
+    const [specialSquares, setSpecialSquares] = useState(undefined);
+    const [specialEffect, setSpecialEffect] = useState(undefined);
 
     const rollDice = () => {
         const roll = Math.floor(Math.random() * 6) + 1;
@@ -36,7 +39,9 @@ const Board = () => {
         let newPosition = playerPosition + roll;
         if (newPosition <= END_VALUE && !isWon) {
             setPlayerPosition(newPosition);
-        } else if (newPosition >= END_VALUE) {
+        }
+        
+        if (newPosition >= END_VALUE) {
             setPlayerPosition(END_VALUE);
             setIsWon(true);
         }
@@ -59,60 +64,83 @@ const Board = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     });
 
+    useEffect(() => {
+        if (specialSquares) setSpecialEffect(specialSquares[playerPosition - 1]);
+    }, [playerPosition]);
+
+    useEffect(() => {
+        if (!isWon) {
+            const valueDistribution = ['🥴', '🎵', '💉', undefined, undefined, undefined];
+            setSpecialSquares(Array.from({ length: END_VALUE }, () => {
+                const randomIndex = Math.floor(Math.random() * valueDistribution.length);
+                return valueDistribution[randomIndex];
+            }).map((x, i) => (i + 1 === 1 || i + 1 === END_VALUE) ? undefined : x));
+        }
+    }, [isWon]);
+
     return (
         <Container fluid className="mt-4">
+
             <Row>
-                {/* Left Panel */}
-                {/* <Col md={2} className="info-panel bg-light border p-3">
-                    <h4>Game Info</h4>
-                    <p>Player Position: {playerPosition}</p>
-                    <p>Dice Roll: {diceRoll || 'Roll to start'}</p>
-                </Col> */}
-
                 {/* Game Board */}
-                <Col md={6}>
-                    <div className="board">
-                        {Array.from({ length: BOARD_SIZE }).map((_, row) => (
-                            <Row key={row} className="justify-content-center">
-                                {Array.from({ length: BOARD_SIZE }).map((_, col) => {
-                                    const index = row * BOARD_SIZE + col;
-                                    const squareNum = BOARD_LAYOUT[index];
+                {specialSquares &&
+                    <Col md={6}>
+                        <div className="board">
+                            {Array.from({ length: BOARD_SIZE }).map((_, row) => (
+                                <Row key={row} className="justify-content-center">
+                                    {Array.from({ length: BOARD_SIZE }).map((_, col) => {
+                                        const index = row * BOARD_SIZE + col;
+                                        const squareNum = BOARD_LAYOUT[index];
 
-                                    return (
-                                        <Col
-                                            key={col}
-                                            className={`square text-center border p-3 ${playerPosition === squareNum ? 'bg-success text-white' : ''
-                                                } ${squareNum === -1 ? 'blank' : ''}`}
-                                        >
-                                            {squareNum !== -1 ? squareNum : ''}
-                                        </Col>
-                                    );
-                                })}
-                            </Row>
-                        ))}
-                    </div>
-                </Col>
+                                        // squareNum is 1-indexed
+                                        const isSpecial = specialSquares[squareNum - 1];
+
+
+                                        return (
+                                            <Col
+                                                key={col}
+                                                className={`square text-center border p-3 ${playerPosition === squareNum ? 'bg-success text-white' : ''
+                                                    } ${squareNum === -1 ? 'blank' : ''}`}
+                                            >
+                                                {(squareNum === -1) ? '' : (isSpecial) ? isSpecial : squareNum}
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                            ))}
+                        </div>
+                    </Col>
+                }
 
                 {/* Right Panel */}
                 <Col md={6} className="info-panel bg-light border p-3">
-                    <h4>Instructions</h4>
                     {(isWon) ? (
                         <div>
                             <p>{WIN_MSG}</p>
                             <p>Press P to play again.</p>
                         </div>
                     ) : (
-                        <p>{(diceRoll) ? 'You rolled: ' + diceRoll : 'Press SPACE to roll the dice.'}</p>
+                        <div>
+                            <h4>Instructions</h4>
+                            <p>{(diceRoll) ? 'You rolled: ' + diceRoll : 'Press SPACE to roll the dice.'}</p>
+                        </div>
                     )}
                     {!isWon &&
                         <ListGroup>
                             {Object.entries(CODES).map(([code, description]) => (
-                                <ListGroup.Item key={code}>
-                                    <strong>{code.toUpperCase()}:</strong> {description}
+                                <ListGroup.Item key={code} className={`${code === specialEffect && 'bg-success'}`}>
+                                    <strong>{code}:</strong> {description}
                                 </ListGroup.Item>
                             ))}
                         </ListGroup>
                     }
+                </Col>
+            </Row>
+
+            <Row>
+                {/* Title */}
+                <Col md={12} className='text-center pt-5 font-monospace'>
+                    <h1>😴 You Snooze | You Lose 😭</h1>
                 </Col>
             </Row>
         </Container>
