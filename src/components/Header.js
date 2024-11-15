@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import { useAppContext } from '../AppContext';
 
 const Header = () => {
     const { profileData, setProfileData } = useAppContext();
+    const navigate = useNavigate();
 
     const handleLogout = (e) => {
         e.preventDefault();
         localStorage.removeItem('token');
         setProfileData([]);
-        return redirect('/');
+        navigate('/');
     };
 
     useEffect(() => {
@@ -47,7 +48,6 @@ const Header = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         {isMobile && <li className="nav-item"><a className="nav-link" href="/">Home</a></li>}
-                        <li className="nav-item"><a className="nav-link" href="/posts">Posts</a></li>
                         {!isMobile &&
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,6 +59,7 @@ const Header = () => {
                                 </ul>
                             </li>
                         }
+                        <li className="nav-item"><a className="nav-link" href="/posts">Posts</a></li>
                     </ul>
                     {profileData.username ? (
                         <div className="navbar-nav ms-auto">
