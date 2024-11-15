@@ -8,9 +8,10 @@ import Anagram from './components/Anagram';
 import Crossword from './components/Crossword';
 import Compose from './components/Compose';
 import Form from './components/Form';
+import Profile from './components/Profile';
+import Board from './components/Board';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Profile from './components/Profile';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/register" element={<Form action="Register" />} />
           <Route path="/login" element={<Form action="Login" />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/board" element={<Board />} />
         </Routes>
       </div>
     </Router>
