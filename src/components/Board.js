@@ -4,18 +4,19 @@ import '../styles/Board.css';
 
 const BOARD_LAYOUT = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    36, -1, -1, -1, -1, -1, -1, -1, -1, 11,
-    35, -1, -1, -1, -1, -1, -1, -1, -1, 12,
-    34, -1, -1, -1, -1, -1, -1, -1, -1, 13,
-    33, -1, -1, -1, -1, -1, -1, -1, -1, 14,
-    32, -1, -1, -1, -1, -1, -1, -1, -1, 15,
-    31, -1, -1, -1, -1, -1, -1, -1, -1, 16,
-    30, -1, -1, -1, -1, -1, -1, -1, -1, 17,
-    29, -1, -1, -1, -1, -1, -1, -1, -1, 18,
+    36, -4, -4, -4, -4, -4, -4, -4, -4, 11,
+    35, -4, -3, -3, -3, -3, -3, -3, -4, 12,
+    34, -4, -3, -2, -2, -2, -2, -3, -4, 13,
+    33, -4, -3, -2, -1, -1, -2, -3, -4, 14,
+    32, -4, -3, -2, -1, -1, -2, -3, -4, 15,
+    31, -4, -3, -2, -2, -2, -2, -3, -4, 16,
+    30, -4, -3, -3, -3, -3, -3, -3, -4, 17,
+    29, -4, -4, -4, -4, -4, -4, -4, -4, 18,
     28, 27, 26, 25, 24, 23, 22, 21, 20, 19,
 ];
 const BOARD_SIZE = 10;
 const END_VALUE = 36;
+const MAX_SLEEP = 4;
 const CODES = {
     '🥴': 'You laughed at a funny joke, but the emotional response caused cataplexy! Your muscles go limp, and you collapse briefly. Miss your next turn to recover.',
     '🎵': '(2 Hz LC stimulation) Your LC has been optogenetically stimulated, boosting norepinephrine release! You feel more alert—go one down on the sleepy scale.',
@@ -24,24 +25,49 @@ const CODES = {
     '💤': 'You miss 2 turns when the sleepy scale is full. Your narcolepsy increases the sleepy scale every turns unless otherwise stated.',
 };
 const WIN_MSG = "Congratulations! You've reached the final step and undergone an LC transplant. This restores norepinephrine release and balances your arousal system. Your sleepy scale resets to zero, and cataplexy is no longer an obstacle. With proper LC function, you're finally able to maintain wakefulness and muscle tone. You win the game—narcolepsy is cured!";
+// Gray color shades
+const GRAY100 = '#f8f9fa'; // Light gray
+const GRAY200 = '#e9ecef'; // Adjusted shade
+const GRAY300 = '#dee2e6';
+const GRAY400 = '#ced4da';
+const GRAY500 = '#adb5bd';
+const GRAY600 = '#6c757d'; // Adjusted darker shade
+const GRAY700 = '#495057';
+const GRAY800 = '#343a40';
+const GRAY900 = '#212529'; // Dark gray
 
 const Board = () => {
+    // Player action + information
     const [playerPosition, setPlayerPosition] = useState(1);
     const [diceRoll, setDiceRoll] = useState(null);
-    const [isStimulated, setIsStimulated] = useState(false);
+
+    // Player status
     const [sleepyScale, setSleepyScale] = useState(0);
     const [turnsDelayed, setTurnsDelayed] = useState(0);
+    const [isSleeping, setIsSleeping] = useState(false);
 
+    // Stats
+    const [numMoves, setNumMoves] = useState(0);
+    const [numSleeps, setNumSleeps] = useState(0);
+
+    // Game status
     const [isWon, setIsWon] = useState(false);
     const [specialSquares, setSpecialSquares] = useState(undefined);
     const [specialEffect, setSpecialEffect] = useState(undefined);
+    const [isStimulated, setIsStimulated] = useState(false);
+
+    // Cheat state
+    const [trigger, setTrigger] = useState(false);
 
     const rollDice = () => {
         if (turnsDelayed > 0) {
             // Delay turn
             setTurnsDelayed(value => value - 1);
             // If last turn delay, reset sleepy scale
-            if (turnsDelayed === 1) setSleepyScale(0);
+            if (isSleeping && turnsDelayed === 1) {
+                setSleepyScale(0);
+                setIsSleeping(false);
+            }
         } else {
             // Roll dice
             const roll = Math.floor(Math.random() * 6) + 1;
@@ -49,10 +75,7 @@ const Board = () => {
             let newPosition = playerPosition + roll;
             if (newPosition <= END_VALUE && !isWon) {
                 setPlayerPosition(newPosition);
-                setSleepyScale(value => value + 1);
-            }
-
-            if (newPosition >= END_VALUE) {
+            } else if (newPosition >= END_VALUE) {
                 setPlayerPosition(END_VALUE);
                 setIsWon(true);
             }
@@ -60,9 +83,12 @@ const Board = () => {
     };
 
     useEffect(() => {
-        if (sleepyScale >= 4) {
+        if (sleepyScale < 0) setSleepyScale(0);
+        if (sleepyScale >= MAX_SLEEP) {
             // Skip 2 turns at sleep scale max
             setTurnsDelayed(2);
+            setIsSleeping(true);
+            setNumSleeps(value => value + 1);
         }
     }, [sleepyScale]);
 
@@ -70,9 +96,12 @@ const Board = () => {
         const handleKeyDown = (e) => {
             if (e.key === ' ' && !isWon) {
                 e.preventDefault();
+                setNumMoves(value => value + 1);
                 rollDice();
-            } else if (isWon && (e.key.toUpperCase() === 'P' || e.key === ' ')) {
+            } else if (isWon && (e.key.toUpperCase() === 'P')) {
                 setIsWon(false);
+                setNumMoves(0);
+                setNumSleeps(0);
             }
         }
 
@@ -85,6 +114,7 @@ const Board = () => {
         if (specialSquares) {
             const effect = specialSquares[playerPosition - 1];
             setSpecialEffect(effect);
+            setTrigger(!trigger);
         }
     }, [playerPosition]);
 
@@ -97,23 +127,27 @@ const Board = () => {
                 setIsStimulated(false);
             }
 
-            // // Update delays and sleepiness
-            // if (specialEffect === '🥴') {
-            //     // Skip next turn
-            //     setTurnsDelayed(value => value + 1);
-            // } else if (specialEffect === '🎵') {
-            //     // Reduce sleepiness
-            //     setSleepyScale(value => (value < 1) ? 0 : value - 1);
-            // } else if (specialEffect === '⚡') {
-            //     // Skip next turn
-            //     setTurnsDelayed(value => value + 1);
-            // } else if (specialEffect === '💉') {
-            //     // Skip next turn and pause sleepiness for one turn
-            //     setTurnsDelayed(value => value + 1);
-            //     setSleepyScale(value => (value < 1 ? 0 : value - 1));
-            // }
+            // Update delays and sleepiness
+            if (specialEffect === '🥴') {
+                // Skip next turn
+                setSleepyScale(value => value + 1);
+                setTurnsDelayed(1);
+            } else if (specialEffect === '🎵') {
+                // Reduce sleepiness
+                setSleepyScale(value => value - 1);
+            } else if (specialEffect === '⚡') {
+                // Skip next turn
+                setSleepyScale(value => value + 1);
+                setTurnsDelayed(1);
+            } else if (specialEffect === '💉') {
+                // Skip next turn and no sleepy scale change
+                setTurnsDelayed(1);
+            }
+        } else {
+            // If there is no special effect, increase sleep
+            setSleepyScale(value => value + 1);
         }
-    }, [specialEffect]);
+    }, [trigger]);
 
     useEffect(() => {
         if (specialSquares) {
@@ -123,7 +157,7 @@ const Board = () => {
                 setSpecialSquares(specialSquares.map(value => (value === '⚡') ? '🎵' : value));
             }
         }
-    }, [isStimulated])
+    }, [isStimulated]);
 
     useEffect(() => {
         if (!isWon) {
@@ -138,11 +172,18 @@ const Board = () => {
             setDiceRoll(null);
             setSleepyScale(0);
             setTurnsDelayed(0);
+        } else {
         }
     }, [isWon]);
 
     return (
-        <Container fluid className="mt-4">
+        <Container fluid className="mt-1">
+            <Row>
+                <Col className='text-center font-monospace p-3'>
+                    <h1>😴 You Snooze | You Lose 😭</h1>
+                </Col>
+            </Row>
+
             <Row>
                 {/* Game Board */}
                 {specialSquares &&
@@ -157,14 +198,51 @@ const Board = () => {
                                         // squareNum is 1-indexed
                                         const isSpecial = specialSquares[squareNum - 1];
 
+                                        // Determine content
+                                        var squareContent = ''
+                                        if (squareNum === 1) {
+                                            squareContent = '➡️';
+                                        } else if (isSpecial) {
+                                            squareContent = isSpecial;
+                                        }
+
+                                        // Determine style
+                                        var bgcolor = 'inherit';
+                                        var bdcolor = 'inherit';
+                                        if (sleepyScale === 1 && squareNum <= -1) {
+                                            bgcolor = GRAY200;
+                                            bdcolor = GRAY300;
+                                        } else if (sleepyScale === 2 && squareNum <= -1) {
+                                            bgcolor = GRAY500;
+                                            bdcolor = GRAY700;
+                                        } else if (sleepyScale === 3 && squareNum <= -1) {
+                                            bgcolor = GRAY700;
+                                            bdcolor = GRAY900;
+                                        } else if (sleepyScale === 4 && squareNum <= -1) {
+                                            bgcolor = 'black';
+                                            bdcolor = 'black';
+                                        }
+
+                                        // Determine player image
+                                        var person = '';
+                                        if (playerPosition === squareNum) {
+                                            person = '🧍';
+                                        }
+
+                                        if (playerPosition === squareNum && sleepyScale >= MAX_SLEEP) {
+                                            person = '🛌';
+                                        }
 
                                         return (
                                             <Col
                                                 key={col}
-                                                className={`square text-center border p-3 ${playerPosition === squareNum ? 'bg-success text-white' : ''
-                                                    } ${squareNum === -1 ? 'blank' : ''}`}
+                                                className={`
+                                                    square text-center p-2
+                                                    ${(squareNum > 0 && sleepyScale < 4) && 'border'}
+                                                `}
+                                                style={{ backgroundColor: bgcolor, borderColor: bdcolor }}
                                             >
-                                                {(squareNum === -1) ? '' : (isSpecial) ? isSpecial : squareNum}
+                                                {squareContent + person}
                                             </Col>
                                         );
                                     })}
@@ -175,10 +253,11 @@ const Board = () => {
                 }
 
                 {/* Right Panel */}
-                <Col md={6} className="info-panel bg-light border p-3">
+                <Col md={6} className="info-panel bg-light border p-2">
                     {(isWon) ? (
                         <div>
                             <p>{WIN_MSG}</p>
+                            <p>You won in {numMoves} moves! You fell asleep {numSleeps} times.</p>
                             <p>Press P to play again.</p>
                         </div>
                     ) : (
@@ -211,8 +290,12 @@ const Board = () => {
             <Row>
                 {/* Title */}
                 <Col md={12} className='text-center pt-5 font-monospace'>
-                    <h1>😴 You Snooze | You Lose 😭</h1>
-                    <p>{'sleepy scale:' + sleepyScale + '; turns delayed: ' + turnsDelayed}</p>
+                    {!isWon &&
+                        <p>
+                            Sleepy Scale: {Array.from({ length: MAX_SLEEP }).map((_, index) => index < sleepyScale ? '🔳' : '🔲')} |
+                            Turns Delayed: {Array.from({ length: turnsDelayed }).fill('🚫')}
+                        </p>
+                    }
                 </Col>
             </Row>
         </Container>
