@@ -3,23 +3,9 @@
     height: 50px;
 }
 
-.blank {
-    border: none;
-}
-
 .board {
     max-width: 600px;
     margin: 0 auto;
-}
-
-.bg-danger {
-    background-color: #dc3545 !important;
-    /* Red for snakes */
-}
-
-.bg-primary {
-    background-color: #0d6efd !important;
-    /* Blue for ladders */
 }
 
 .win-screen-overlay {

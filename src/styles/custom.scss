@@ -1,0 +1,17 @@
+// Import Bootstrap's SCSS variables
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// Override gray color shades
+$gray-100: #f8f9fa; // Light gray
+$gray-200: #e9ecef; // Adjusted shade
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d; // Adjusted darker shade
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529; // Dark gray
+
+// Import the rest of Bootstrap
+@import "bootstrap/scss/bootstrap";

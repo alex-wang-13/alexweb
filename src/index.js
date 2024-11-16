@@ -4,6 +4,7 @@ import App from './App';
 import { AppProvider } from './AppContext';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/custom.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
